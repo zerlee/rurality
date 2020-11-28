@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.db.models import Q
 
 from asset.ecs.models import EcsModel
 from asset.manager.models import RegionModel
@@ -11,11 +12,20 @@ from utils.aliyun import AliyunECS
 from utils.time_utils import str2datetime_by_format
 
 
-def get_ecses(page_num=None, page_size=None, operator=None):
+def get_ecses(keyword=None, region_id=None, zone_id=None, page_num=None, page_size=None, operator=None):
     '''
     获取ECS列表
     '''
     base_query = EcsModel.objects
+    if keyword:
+        base_query = base_query.filter(Q(name__icontains=keyword) |
+                                       Q(hostname__icontains=keyword) |
+                                       Q(inner_ip__icontains=keyword) |
+                                       Q(instance_id__icontains=keyword))
+    if region_id:
+        base_query = base_query.filter(region_id=region_id)
+    if zone_id:
+        base_query = base_query.filter(zone_id=zone_id)
     total = base_query.count()
     objs = base_ctl.query_objs_by_page(base_query, page_num, page_size)
     data_list = []
