@@ -11,7 +11,7 @@
  Target Server Version : 50643
  File Encoding         : 65001
 
- Date: 01/12/2020 11:29:01
+ Date: 01/12/2020 18:45:39
 */
 
 SET NAMES utf8mb4;
@@ -158,7 +158,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of django_migrations
@@ -178,6 +178,7 @@ INSERT INTO `django_migrations` VALUES (11, 'service', '0004_environmentmodel_se
 INSERT INTO `django_migrations` VALUES (12, 'service', '0005_auto_20201127_1610', '2020-11-27 08:10:32.261804');
 INSERT INTO `django_migrations` VALUES (13, 'ecs', '0001_initial', '2020-11-27 12:22:07.219712');
 INSERT INTO `django_migrations` VALUES (14, 'service', '0006_serviceassetmodel', '2020-12-01 03:25:52.397268');
+INSERT INTO `django_migrations` VALUES (15, 'service', '0007_serviceassetobjmodel', '2020-12-01 10:45:21.342036');
 COMMIT;
 
 -- ----------------------------
@@ -682,6 +683,29 @@ INSERT INTO `service_asset` VALUES (1, '2020-12-01 03:27:43.783912', '2020-12-01
 INSERT INTO `service_asset` VALUES (2, '2020-12-01 03:27:49.322467', '2020-12-01 03:27:49.322532', 0, 3, 1);
 INSERT INTO `service_asset` VALUES (3, '2020-12-01 03:27:53.259204', '2020-12-01 03:27:53.259265', 0, 4, 1);
 COMMIT;
+
+-- ----------------------------
+-- Table structure for service_asset_obj
+-- ----------------------------
+DROP TABLE IF EXISTS `service_asset_obj`;
+CREATE TABLE `service_asset_obj` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `dt_create` datetime(6) NOT NULL,
+  `dt_update` datetime(6) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL,
+  `asset_obj_id` int(11) NOT NULL,
+  `remark` longtext,
+  `asset_id` int(11) NOT NULL,
+  `environment_id` int(11) NOT NULL,
+  `service_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `service_asset_obj_asset_id_200df2bb_fk_asset_id` (`asset_id`),
+  KEY `service_asset_obj_environment_id_b3021b21_fk_environment_id` (`environment_id`),
+  KEY `service_asset_obj_service_id_074819e0_fk_service_id` (`service_id`),
+  CONSTRAINT `service_asset_obj_asset_id_200df2bb_fk_asset_id` FOREIGN KEY (`asset_id`) REFERENCES `asset` (`id`),
+  CONSTRAINT `service_asset_obj_environment_id_b3021b21_fk_environment_id` FOREIGN KEY (`environment_id`) REFERENCES `environment` (`id`),
+  CONSTRAINT `service_asset_obj_service_id_074819e0_fk_service_id` FOREIGN KEY (`service_id`) REFERENCES `service` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for service_environment

@@ -81,6 +81,9 @@ class ServiceEnvironmentModel(BaseModel):
     不同服务可能并不一定有相同数量的环境
     如果是强制必须都有的，则可以不使用此关联表
     '''
+    model_name = '服务环境'
+    model_sign = 'service_environment'
+
     service = models.ForeignKey(ServiceModel, on_delete=models.CASCADE)
     environment = models.ForeignKey(EnvironmentModel, on_delete=models.CASCADE)
 
@@ -92,8 +95,28 @@ class ServiceAssetModel(BaseModel):
     '''
     服务关联资产模块
     '''
+    model_name = '服务资产模块'
+    model_sign = 'service_asset'
+
     service = models.ForeignKey(ServiceModel, on_delete=models.CASCADE)
     asset = models.ForeignKey(AssetModel, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'service_asset'
+
+
+class ServiceAssetObjModel(BaseModel):
+    '''
+    服务关联资产实例
+    '''
+    model_name = '服务资产实例'
+    model_sign = 'service_asset_obj'
+
+    service = models.ForeignKey(ServiceModel, on_delete=models.CASCADE, verbose_name='服务')
+    environment = models.ForeignKey(EnvironmentModel, on_delete=models.CASCADE, verbose_name='环境')
+    asset = models.ForeignKey(AssetModel, on_delete=models.CASCADE, verbose_name='资产模块')
+    asset_obj_id = models.IntegerField('资产对象ID')
+    remark = models.TextField('备注', default='', null=True)
+
+    class Meta:
+        db_table = 'service_asset_obj'
