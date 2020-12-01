@@ -115,7 +115,7 @@ class ServiceAssetObjModel(BaseModel):
     service = models.ForeignKey(ServiceModel, on_delete=models.CASCADE, verbose_name='服务')
     environment = models.ForeignKey(EnvironmentModel, on_delete=models.CASCADE, verbose_name='环境')
     asset = models.ForeignKey(AssetModel, on_delete=models.CASCADE, verbose_name='资产模块')
-    asset_obj_id = models.IntegerField('资产对象ID')
+    asset_obj_id = models.IntegerField('资产对象ID', db_index=True)
     remark = models.TextField('备注', default='', null=True)
 
     class Meta:
